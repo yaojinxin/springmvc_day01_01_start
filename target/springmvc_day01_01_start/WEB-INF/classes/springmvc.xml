@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+<!--扫描包-->
+        <context:component-scan base-package="com.aeolia">
+<!--            <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>表示扫描com.aeolia下所有有Controller注解的类-->
+<!--            <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>表示扫描com.aeolia下所有不带Controller注解的类-->
+        </context:component-scan>
+        <bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+            <property name="prefix" value="/WEB-INF/pages/"></property>
+            <property name="suffix" value=".jsp"></property>
+        </bean>
+
+<!--配置自定义类型转换器-->
+    <bean id="conversionServiceFactoryBean" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean class="com.aeolia.utils.StringToDateConverter"></bean>
+            </set>
+        </property>
+    </bean>
+
+<!--配置处理器映射器-->
+<!--    <bean id="requestMappingHandlerAdapter" class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">-->
+<!--        <property name="messageConverters">-->
+<!--            <list>-->
+<!--                <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"></bean>-->
+<!--            </list>-->
+<!--        </property>-->
+<!--    </bean>-->
+<!--开启SpringMVC注解支持-->
+    <mvc:annotation-driven conversion-service="conversionServiceFactoryBean"/>
+
+</beans>
